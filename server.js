@@ -20,20 +20,22 @@ app.get('/', (request, response) => {
 
 app.get('/login', (req, res) => {
   res.sendFile(
-    __dirname + '/views/profile'
+    __dirname + '/views/profile.html'
   )
 })
 
 app.get('/signup', (req, res) => {
   res.sendFile(
-    __dirname + '/views/signup'
+    __dirname + '/views/signup.html'
   )
 })
 
 
 // API ROUTES ============================= //
 
-
+app.post('/api/test', (req, res) => {
+  res.json({status: 200, message: 'Test Success'})
+});
 
 
 // START SERVER ============================= //
