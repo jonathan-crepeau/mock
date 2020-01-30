@@ -33,7 +33,9 @@ app.get('/signup', (req, res) => {
 
 // API ROUTES ============================= //
 
-
+app.post('/api/test', (req, res) => {
+  res.json({status: 200, message: 'Test Success'})
+});
 
 
 // START SERVER ============================= //
