@@ -12,12 +12,28 @@ const PORT = process.env.PORT || 4000;
 // HTML ROUTES ============================= //
 
 app.get('/', (request, response) => {
-    response.send(`
-    <h1>HoodScoop Root Route</h1>
-    `)
+    response.sendFile(
+      __dirname + '/views/login.html'
+    )
 })
 
+app.get('/login', (req, res) => {
+  res.sendFile(
+    __dirname + '/views/profile'
+  )
+})
+
+app.get('/signup', (req, res) => {
+  res.sendFile(
+    __dirname + '/views/signup'
+  )
+})
+
+
 // API ROUTES ============================= //
+
+
+
 
 // START SERVER ============================= //
 app.listen(PORT, () => {
