@@ -8,6 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // MIDDLEWARE ============================= //
+app.use(express.static(__dirname + '/public'));
 
 // HTML ROUTES ============================= //
 
