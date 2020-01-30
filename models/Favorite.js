@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const FavoriteSchema = new Schema({
     eventName: String,
     eventId: String,
-    Location: Num,
+    Longitude: Number,
+    Latitude: Number,
 });
 
 const Favorite = mongoose.model('Favorite', FavoriteSchema);
