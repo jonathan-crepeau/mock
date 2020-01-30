@@ -1,0 +1,26 @@
+{
+  "name": "hoodscoop",
+  "version": "1.0.0",
+  "description": "Application that allows users to search and favorite local events!",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathan-crepeau/hoodscoop.git"
+  },
+  "author": "jc + sn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonathan-crepeau/hoodscoop/issues"
+  },
+  "homepage": "https://github.com/jonathan-crepeau/hoodscoop#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
