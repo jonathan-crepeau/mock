@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const mongo = require('mongodb');
+const bcrypt = require('bcrypt');
 
 const db = require('./models');
 // INTERNAL MODULES ============================= //
@@ -83,9 +84,50 @@ app.post('/api/submitForm', (request, response) => {
 
 // ANCHOR - API Route
 
-// app.post('/login', (request, response) => {
+app.post('/api/login', (request, response) => {
+  console.log(request.body);
+  if (!request.body.email || !request.body.password) {
+    return response.status(400).json({
+      status:400,
+      errors: [{message: 'Please enter your email and password'}],
+    });
+  }
 
-//   })
+  db.User.findOne({email: request.body.email}, (error, foundUser) => {
+    if (error) return response.status(500).json({
+      status: 500,
+      errors: [{message: 'Something went wrong. Please try again.'}],
+    });
+
+    if (!foundUser) {
+      return response.status(400).json({
+        status: 400,
+        errors: [{message: 'Username or password is incorrect.'}],
+      });
+    }
+
+    bcrypt.compare(request.body.password, foundUser.password, (error, isMatch) => {
+      if (error) return response.status(500).json({
+        status: 500,
+        errors: [{message: 'Something went wrong. Please try again.'}],
+      });
+
+      if (isMatch) { 
+        request.session.loggedIn = true;
+        request.session.currentUser = foundUser._id;
+        return response.status(200).json({
+          status: 200,
+          data: {id: foundUser._id},
+        });
+      } else {
+        return response.status(400).json({
+          status: 400,
+          errors: [{message: 'Username or password is incorrect.'}],
+        });
+      }
+    }); // end of bcrypt compare brackets
+  });
+});
 
 
 
