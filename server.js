@@ -24,7 +24,7 @@ app.get('/', (request, response) => {
     )
 })
 
-app.get('/login', (req, res) => {
+app.get('/profile', (req, res) => {
   res.sendFile(
     __dirname + '/views/profile.html'
   )
@@ -55,16 +55,6 @@ app.post('/api/submitForm', (req, res) => {
        res.json({savedUser});
      })
   })
-
-  // LOGIN API ROUTE
-
-  // app.post('/api/login', (request, response) => {
-  //   return response.status(200);
-  // });
-
-  // app.get('api/submitForm', (req, res) => {
-  //
-  // })
 
 
 // START SERVER ============================= //
