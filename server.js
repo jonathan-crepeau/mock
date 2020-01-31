@@ -67,19 +67,28 @@ app.get('/api/users', (request, response) => {
 });
 
 
-// ANCHOR - Create User Route
+// ANCHOR - Register (Create) Single User
 
-app.post('/api/submitForm', (request, response) => {
-  db.User.create(request.body, (error, createUser) => {
-    if (error) response.status(500).json({message: 'Something went wrong here. Try again'});
-    response.status(200).json(createUser);
-  })
-})
+app.post('/api/register', async (req, res) => {
+  const userData = req.body;
+  console.log(userData);
+  let hash;
+
+  // TODO - Add code to hash password after login api route below is succcessful
+
+  db.User.create(userData, (err, newUser) => {
+    if (err) return res.status(200).json({
+      status: 400,
+      error: 'Bad Request',
+    });
+    res.status(200).json(newUser);
+  });
+});
 
 // SECTION - Login Authentication
 
 /* GAME PLAN
-1. 
+1. Create
 */
 
 // ANCHOR - API Route
@@ -130,6 +139,14 @@ app.post('/api/login', (request, response) => {
 });
 
 
+// ANCHOR Delete Single User
+
+app.delete('/api/users/:id', (req, res) => {
+  db.User.findByIdAndDelete(req.params.id, (err, deleteUser) => {
+    if (err) res.status(400).json({status: 400, error: 'Bad request, please try again.'});
+    res.status(200).json(deleteUser);
+  });
+});
 
 
 
