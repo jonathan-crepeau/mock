@@ -39,22 +39,57 @@ app.get('/signup', (req, res) => {
 
 // API ROUTES ============================= //
 
-app.post('/api/test', (req, res) => {
-  res.json({status: 200, message: 'Test Success'})
+// app.post('/api/test', (req, res) => {
+//   res.json({status: 200, message: 'Test Success'})
+// });
+
+// app.post('/api/submitForm', (req, res) => {
+
+//      console.log("in submit form")
+
+//      db.User.create(req.body, (err, savedUser) => {
+//        if (err) {
+//         return res.json({lol})
+//        }
+//        console.log(`saved new user: ${savedUser}`)
+//        res.json({savedUser});
+//      })
+//   })
+
+// ANCHOR - Index All Users
+
+app.get('/api/users', (request, response) => {
+  db.User.find({}, (error, allUsers) => {
+    if (error) return response.status(500).json({message: 'Something went wrong here. Try again'});
+    response.status(200).json(allUsers);
+  });
 });
 
-app.post('/api/submitForm', (req, res) => {
 
-     console.log("in submit form")
+// ANCHOR - Create User Route
 
-     db.User.create(req.body, (err, savedUser) => {
-       if (err) {
-        return res.json({lol})
-       }
-       console.log(`saved new user: ${savedUser}`)
-       res.json({savedUser});
-     })
+app.post('/api/submitForm', (request, response) => {
+  db.User.create(request.body, (error, createUser) => {
+    if (error) response.status(500).json({message: 'Something went wrong here. Try again'});
+    response.status(200).json(createUser);
   })
+})
+
+// SECTION - Login Authentication
+
+/* GAME PLAN
+1. 
+*/
+
+// ANCHOR - API Route
+
+// app.post('/login', (request, response) => {
+
+//   })
+
+
+
+
 
 
 // START SERVER ============================= //
