@@ -1,15 +1,11 @@
 // EXTERNAL MODULES ============================= //
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const mongo = require('mongodb');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
+const app = express();
 const db = require('./models');
-// INTERNAL MODULES ============================= //
-
-// CONFIGURATION VARIABLES ============================= //
 const PORT = process.env.PORT || 4000;
 
 // MIDDLEWARE ============================= //
@@ -91,52 +87,38 @@ app.post('/api/register', async (req, res) => {
 1. Create
 */
 
-// ANCHOR - API Route
+// ANCHOR - LOGIN API Route
 
-app.post('/api/login', (request, response) => {
-  console.log(request.body);
-  if (!request.body.email || !request.body.password) {
-    return response.status(400).json({
-      status:400,
-      errors: [{message: 'Please enter your email and password'}],
-    });
-  }
+app.post('/api/login', (req, res) => {
+  const { email, password} = req.body;
 
-  db.User.findOne({email: request.body.email}, (error, foundUser) => {
-    if (error) return response.status(500).json({
-      status: 500,
-      errors: [{message: 'Something went wrong. Please try again.'}],
-    });
-
-    if (!foundUser) {
-      return response.status(400).json({
-        status: 400,
-        errors: [{message: 'Username or password is incorrect.'}],
-      });
+  db.User.findOne({email}, async (err, foundUser) => {
+    let passwordsMatch;
+    if (err) res.status(500).json({status: 500, error: 'Bad request(A)'});
+    
+    if(!foundUser) {
+      return res.status(400).json({status: 400, message: 'Username or password is incorrect.'});
     }
 
-    bcrypt.compare(request.body.password, foundUser.password, (error, isMatch) => {
-      if (error) return response.status(500).json({
-        status: 500,
-        errors: [{message: 'Something went wrong. Please try again.'}],
-      });
+    try {
+      passwordsMatch = password === foundUser.password;      
+      console.log(req.body);
+      console.log('Found User ===>', foundUser);
+    } catch (err) {
+      res.status(400).json({status: 400, message: 'Bad request(B).'});
+    }
 
-      if (isMatch) { 
-        request.session.loggedIn = true;
-        request.session.currentUser = foundUser._id;
-        return response.status(200).json({
-          status: 200,
-          data: {id: foundUser._id},
-        });
-      } else {
-        return response.status(400).json({
-          status: 400,
-          errors: [{message: 'Username or password is incorrect.'}],
-        });
-      }
-    }); // end of bcrypt compare brackets
+    if (passwordsMatch) { 
+      res.status(200).json({status: 200, message: 'Success!'});
+    } else {
+      res.status(400).json({status: 400, error: 'Invalid credentials.'});
+    }
+
   });
 });
+
+
+
 
 
 // ANCHOR Delete Single User
