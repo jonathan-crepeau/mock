@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>HoodSkoop</title>
+    <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/8988dee15f.js" crossorigin="anonymous"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Main CSS -->
@@ -12,10 +14,109 @@
     <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Google Maps API -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQ_uZXf5Bpk1f82rsNW9FToHQoZTDoy2U"></script>
     <!-- Main JS -->
     <script defer src="/scripts/profile.js"></script>
   </head>
   <body>
-    <h1>Profile Route</h1>
+    <div class="pos-f-t">
+      <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+          <h5 class="text-white h4">Collapsed content</h5>
+          <span class="text-muted">Toggleable via the navbar brand.</span>
+        </div>
+      </div>
+      <nav class="navbar mb-2 navbar-dark bg-dark">
+        <h1><i class="fas fa-street-view"></i>  HoodSkoop</h1> <h3> What's the Scoop in Your Hood? </h3>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="container-fluid">
+  <div class="row">
+    <div class="col-md mr-auto" >
+      <div id="map"></div>
+    </div>
+    <div class="col-md">
+      <nav class="navbar mt-3 mb-2 navbar-expand-lg navbar-light bg-dark">
+        <div class="container">
+          <a class="navbar-brand text-white"  href="#">Events</a>
+          <div class="btn-toolbar mb-1" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group btn-group-lg mr-1" role="group" aria-label="First group">
+              <button type="button" class="btn btn-secondary"><i class="far fa-heart"></i> Favorites</button>
+              <button type="button" class="btn btn-secondary">Filter 1</button>
+              <button type="button" class="btn btn-secondary">Filter 2</button>
+              <button type="button" class="btn btn-secondary">Filter 3</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="card-columns">
+        <div class="card text-white bg-dark mt-1" style="max-width: 25rem;">
+          <div class="card-header"><button type="button" class="btn btn-outline-danger"><i class="far fa-heart"></button></i></div>
+          <img src="https://i.ibb.co/gFYbrhP/joseph-barrientos-Ji-G7-Bu1-Mo-M-unsplash.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Dark card title</h5>
+                <p class="card-text">Some quick example text to build on the card </p>
+            </div>
+          </div>
+            <div class="card text-white bg-dark mt-1" style="max-width: 25rem;">
+              <div class="card-header"><button type="button" class="btn btn-outline-danger"><i class="far fa-heart"></button></i></div>
+                <img src="https://i.ibb.co/gFYbrhP/joseph-barrientos-Ji-G7-Bu1-Mo-M-unsplash.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Dark card title</h5>
+                    <p class="card-text">Some quick example text to build on the card</p>
+                </div>
+              </div>
+                <div class="card text-white bg-dark mt-1" style="max-width: 25rem;">
+                  <div class="card-header"><button type="button" class="btn btn-outline-danger"><i class="far fa-heart"></button></i></div>
+                  <img src="https://i.ibb.co/gFYbrhP/joseph-barrientos-Ji-G7-Bu1-Mo-M-unsplash.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Dark card title</h5>
+                        <p class="card-text">Some quick example text to build on the card</p>
+                    </div>
+                  </div>
+                  <div class="card text-white bg-dark mt-1" style="max-width: 25rem;">
+                    <div class="card-header"><button type="button" class="btn btn-outline-danger"><i class="far fa-heart"></button></i></div>
+                    <img src="https://i.ibb.co/gFYbrhP/joseph-barrientos-Ji-G7-Bu1-Mo-M-unsplash.jpg" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Dark card title</h5>
+                          <p class="card-text">Some quick example text to build on the card</p>
+                      </div>
+                    </div>
+                    <div class="card text-white bg-dark mt-1" style="max-width: 25rem;">
+                      <div class="card-header"><button type="button" class="btn btn-outline-danger"><i class="far fa-heart"></button></i></div>
+                      <img src="https://i.ibb.co/gFYbrhP/joseph-barrientos-Ji-G7-Bu1-Mo-M-unsplash.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Dark card title</h5>
+                            <p class="card-text">Some quick example text to build on the card</p>
+                        </div>
+                      </div>
+                      <div class="card text-white bg-dark mt-1" style="max-width: 25rem;">
+                        <div class="card-header"><button type="button" class="btn btn-outline-danger"><i class="far fa-heart"></button></i></div>
+                        <img src="https://i.ibb.co/gFYbrhP/joseph-barrientos-Ji-G7-Bu1-Mo-M-unsplash.jpg" class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <h5 class="card-title">Dark card title</h5>
+                              <p class="card-text">Some quick example text to build on the card</p>
+                          </div>
+                        </div>
+                <!-- <div class="card text-white bg-dark mt-3" style="max-width: 25rem;">
+                  <div class="card-header">Header</div>
+                    <div class="card-body">
+                      <h5 class="card-title">Dark card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div> -->
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
   </body>
 </html>
