@@ -17,9 +17,15 @@ app.use(express.static(__dirname + '/public'));
 
 // ANCHOR Express Session 
 app.use(session({
+  store: new MongoStore({
+    url: 'mongodb://localhost:27017/user-info',
+  }),
   secret: process.env.SESSION_SECRET || "jdugifjk24u994u8tk32ngi3u",
   resave: false,
   saveUninitialized: false,
+  cookie:{
+    maxAge: 1000 * 60 * 60 * 24 * 7 * 2 // two weeks
+  },
 }));
 
 // HTML ROUTES ============================= //
