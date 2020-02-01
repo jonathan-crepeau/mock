@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 const db = require('./models');
@@ -12,6 +14,13 @@ const PORT = process.env.PORT || 4000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
+
+// ANCHOR Express Session 
+app.use(session({
+  secret: process.env.SESSION_SECRET || "jdugifjk24u994u8tk32ngi3u",
+  resave: false,
+  saveUninitialized: false,
+}));
 
 // HTML ROUTES ============================= //
 
@@ -36,24 +45,7 @@ app.get('/signup', (req, res) => {
 
 // API ROUTES ============================= //
 
-// app.post('/api/test', (req, res) => {
-//   res.json({status: 200, message: 'Test Success'})
-// });
-
-// app.post('/api/submitForm', (req, res) => {
-
-//      console.log("in submit form")
-
-//      db.User.create(req.body, (err, savedUser) => {
-//        if (err) {
-//         return res.json({lol})
-//        }
-//        console.log(`saved new user: ${savedUser}`)
-//        res.json({savedUser});
-//      })
-//   })
-
-// ANCHOR - Index All Users
+// ANCHOR - GET Index All Users
 
 app.get('/api/users', (request, response) => {
   db.User.find({}, (error, allUsers) => {
@@ -63,7 +55,7 @@ app.get('/api/users', (request, response) => {
 });
 
 
-// ANCHOR - Register (Create) Single User
+// ANCHOR - POST Register (Create) Single User
 
 app.post('/api/register', async (req, res) => {
   const userData = req.body;
@@ -71,6 +63,13 @@ app.post('/api/register', async (req, res) => {
   let hash;
 
   // TODO - Add code to hash password after login api route below is succcessful
+
+  try {
+    hash = await bcrypt.hashSync(req.body.password, 10);
+    userData.password = hash;
+  } catch (err) {
+    res.status(400).json({status: 400, error: 'Bad Request(C)'});
+  }
 
   db.User.create(userData, (err, newUser) => {
     if (err) return res.status(200).json({
@@ -81,32 +80,34 @@ app.post('/api/register', async (req, res) => {
   });
 });
 
-// SECTION - Login Authentication
 
-/* GAME PLAN
-1. Create
-*/
-
-// ANCHOR - LOGIN API Route
+// ANCHOR - POST Login API Route
 
 app.post('/api/login', (req, res) => {
-  const { email, password} = req.body;
+  const { firstName, lastName, email, password} = req.body;
 
   db.User.findOne({email}, async (err, foundUser) => {
     let passwordsMatch;
-    if (err) res.status(500).json({status: 500, error: 'Bad request(A)'});
+    if (err) res.status(400).json({status: 540, error: 'Bad request(A)'});
     
     if(!foundUser) {
       return res.status(400).json({status: 400, message: 'Username or password is incorrect.'});
     }
 
     try {
-      passwordsMatch = password === foundUser.password;      
-      console.log(req.body);
-      console.log('Found User ===>', foundUser);
+      passwordsMatch = await bcrypt.compare(password, foundUser.password); 
+      console.log(passwordsMatch);
     } catch (err) {
       res.status(400).json({status: 400, message: 'Bad request(B).'});
     }
+
+    req.session.currentUser = foundUser._id;
+    req.session.createdAt = new Date().toDateString();
+    req.session.user = foundUser;
+
+    console.log(req.session);
+
+
 
     if (passwordsMatch) { 
       res.status(200).json({status: 200, message: 'Success!'});
@@ -118,10 +119,17 @@ app.post('/api/login', (req, res) => {
 });
 
 
+// ANCHOR GET Verify Single User 
+
+app.get('/api/verify', (req, res) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({status: 401, error: 'Unauthorized, please login and try again.'})
+  }
+  res.status(200).json(req.session.user);
+});
 
 
-
-// ANCHOR Delete Single User
+// ANCHOR DELETE Destroy Single User
 
 app.delete('/api/users/:id', (req, res) => {
   db.User.findByIdAndDelete(req.params.id, (err, deleteUser) => {
